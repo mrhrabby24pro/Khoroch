@@ -9,6 +9,7 @@ import { QuickAdd } from './components/QuickAdd';
 import { GoalsSection } from './components/GoalsSection';
 import { LiabilitiesSection } from './components/LiabilitiesSection';
 import { BackupSection } from './components/BackupSection';
+import { AttainmentOverview } from './components/AttainmentOverview';
 import { QUICK_PRESETS as DEFAULT_PRESETS } from './constants';
 
 const App: React.FC = () => {
@@ -146,6 +147,12 @@ const App: React.FC = () => {
 
       <main className="max-w-5xl mx-auto px-4 pt-8 animate-in fade-in duration-700">
         <SummaryCards summary={summary} />
+        
+        <AttainmentOverview 
+          summary={summary} 
+          goals={goals} 
+          liabilities={liabilities} 
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-5 space-y-8">
