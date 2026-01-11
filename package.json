@@ -1,5 +1,5 @@
 {
-  "name": "আমার-খরচ-খাতা-(amar-khoroch-khata)",
+  "name": "রাব্বি-হোসেনের-হিসাব",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,7 +12,8 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "recharts": "2.15.0",
-    "lucide-react": "0.475.0"
+    "lucide-react": "0.475.0",
+    "@google/genai": "^1.35.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
