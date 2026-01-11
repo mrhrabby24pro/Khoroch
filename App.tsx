@@ -5,6 +5,7 @@ import { SummaryCards } from './components/SummaryCards';
 import { TransactionForm } from './components/TransactionForm';
 import { TransactionList } from './components/TransactionList';
 import { ChartSection } from './components/ChartSection';
+import { QuickAdd } from './components/QuickAdd';
 
 const App: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
@@ -88,11 +89,15 @@ const App: React.FC = () => {
         <SummaryCards summary={summary} />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left Column: Form and Presets */}
           <div className="lg:col-span-5 space-y-8">
             <TransactionForm onAdd={addTransaction} />
+            {/* integrated QuickAdd component */}
+            <QuickAdd onAdd={addTransaction} />
             <ChartSection transactions={transactions} />
           </div>
 
+          {/* Right Column: List */}
           <div className="lg:col-span-7">
             <TransactionList 
               transactions={transactions} 
