@@ -10,6 +10,7 @@ import { GoalsSection } from './components/GoalsSection';
 import { LiabilitiesSection } from './components/LiabilitiesSection';
 import { BackupSection } from './components/BackupSection';
 import { AttainmentOverview } from './components/AttainmentOverview';
+import { AIAnalyst } from './components/AIAnalyst';
 import { QUICK_PRESETS as DEFAULT_PRESETS } from './constants';
 
 const App: React.FC = () => {
@@ -158,6 +159,14 @@ const App: React.FC = () => {
           <div className="lg:col-span-5 space-y-8">
             <TransactionForm onAdd={addTransaction} />
             <QuickAdd presets={quickPresets} onAdd={addTransaction} onUpdatePresets={setQuickPresets} />
+            
+            <AIAnalyst 
+              transactions={transactions} 
+              summary={summary} 
+              goals={goals} 
+              liabilities={liabilities} 
+            />
+
             <BackupSection 
               transactions={transactions} 
               goals={goals} 
