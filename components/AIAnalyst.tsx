@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { Transaction, SummaryData, Goal, Liability } from '../types';
@@ -20,7 +19,8 @@ export const AIAnalyst: React.FC<AIAnalystProps> = ({ transactions, summary, goa
     setLoading(true);
     setError(null);
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+      // Fix: Always use direct process.env.API_KEY when initializing.
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       
       const context = {
         summary,
@@ -48,6 +48,7 @@ export const AIAnalyst: React.FC<AIAnalystProps> = ({ transactions, summary, goa
         5. Maintain a supportive and professional tone. Use Markdown for formatting (bolding important figures).`,
       });
 
+      // Fix: Use the .text property directly instead of a text() method.
       setAnalysis(response.text || "দুঃখিত, কোনো বিশ্লেষণ পাওয়া যায়নি।");
     } catch (err) {
       console.error(err);

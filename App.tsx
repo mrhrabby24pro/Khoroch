@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { Transaction, SummaryData, Goal, QuickPreset, Liability, Currency } from './types';
 import { SummaryCards } from './components/SummaryCards';
@@ -10,6 +9,7 @@ import { GoalsSection } from './components/GoalsSection';
 import { LiabilitiesSection } from './components/LiabilitiesSection';
 import { BackupSection } from './components/BackupSection';
 import { AttainmentOverview } from './components/AttainmentOverview';
+import { AIAnalyst } from './components/AIAnalyst';
 import { QUICK_PRESETS as DEFAULT_PRESETS, EXCHANGE_RATE } from './constants';
 
 const App: React.FC = () => {
@@ -89,7 +89,6 @@ const App: React.FC = () => {
 
   const deleteGoal = (id: string) => {
     if (window.confirm('আপনি কি এই লক্ষ্যটি মুছে ফেলতে চান?')) {
-      setTransactions(prev => prev.filter(t => t.id !== id)); // Wait, the original code had setTransactions for deleteGoal. Fixing it to setGoals.
       setGoals(prev => prev.filter(g => g.id !== id));
     }
   };
@@ -164,19 +163,28 @@ const App: React.FC = () => {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 pt-8 animate-in fade-in duration-700">
-        <SummaryCards summary={summary} />
-        
-        <AttainmentOverview 
-          summary={summary} 
-          goals={goals} 
-          liabilities={liabilities} 
-        />
+        <div id="capture-area" className="space-y-8 pb-4">
+          <SummaryCards summary={summary} />
+          
+          <AttainmentOverview 
+            summary={summary} 
+            goals={goals} 
+            liabilities={liabilities} 
+          />
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-5 space-y-8">
             <TransactionForm onAdd={addTransaction} />
             <QuickAdd presets={quickPresets} onAdd={addTransaction} onUpdatePresets={setQuickPresets} />
             
+            <AIAnalyst 
+              transactions={transactions} 
+              summary={summary} 
+              goals={goals} 
+              liabilities={liabilities} 
+            />
+
             <BackupSection 
               transactions={transactions} 
               goals={goals} 
