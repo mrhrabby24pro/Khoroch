@@ -8,6 +8,7 @@ import { ChartSection } from './components/ChartSection';
 import { QuickAdd } from './components/QuickAdd';
 import { GoalsSection } from './components/GoalsSection';
 import { LiabilitiesSection } from './components/LiabilitiesSection';
+import { BackupSection } from './components/BackupSection';
 import { QUICK_PRESETS as DEFAULT_PRESETS } from './constants';
 
 const App: React.FC = () => {
@@ -150,6 +151,11 @@ const App: React.FC = () => {
           <div className="lg:col-span-5 space-y-8">
             <TransactionForm onAdd={addTransaction} />
             <QuickAdd presets={quickPresets} onAdd={addTransaction} onUpdatePresets={setQuickPresets} />
+            <BackupSection 
+              transactions={transactions} 
+              goals={goals} 
+              liabilities={liabilities} 
+            />
             <LiabilitiesSection 
               liabilities={liabilities} 
               onAdd={addLiability} 
