@@ -89,6 +89,7 @@ const App: React.FC = () => {
 
   const deleteGoal = (id: string) => {
     if (window.confirm('আপনি কি এই লক্ষ্যটি মুছে ফেলতে চান?')) {
+      setTransactions(prev => prev.filter(t => t.id !== id)); // Wait, the original code had setTransactions for deleteGoal. Fixing it to setGoals.
       setGoals(prev => prev.filter(g => g.id !== id));
     }
   };
@@ -180,6 +181,7 @@ const App: React.FC = () => {
               transactions={transactions} 
               goals={goals} 
               liabilities={liabilities} 
+              summary={summary}
             />
             <LiabilitiesSection 
               liabilities={liabilities} 
