@@ -1,10 +1,12 @@
 
 export type TransactionType = 'income' | 'expense';
 export type LiabilityType = 'remittance' | 'debt';
+export type Currency = 'BDT' | 'MYR';
 
 export interface Transaction {
   id: string;
   amount: number;
+  currency: Currency;
   description: string;
   type: TransactionType;
   category: string;
@@ -29,6 +31,7 @@ export interface QuickPreset {
   id: string;
   icon: string;
   amount: number;
+  currency: Currency;
   description: string;
   category: string;
   type: TransactionType;

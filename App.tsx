@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Transaction, SummaryData, Goal, QuickPreset, Liability } from './types';
+import { Transaction, SummaryData, Goal, QuickPreset, Liability, Currency } from './types';
 import { SummaryCards } from './components/SummaryCards';
 import { TransactionForm } from './components/TransactionForm';
 import { TransactionList } from './components/TransactionList';
@@ -10,7 +10,7 @@ import { GoalsSection } from './components/GoalsSection';
 import { LiabilitiesSection } from './components/LiabilitiesSection';
 import { BackupSection } from './components/BackupSection';
 import { AttainmentOverview } from './components/AttainmentOverview';
-import { QUICK_PRESETS as DEFAULT_PRESETS } from './constants';
+import { QUICK_PRESETS as DEFAULT_PRESETS, EXCHANGE_RATE } from './constants';
 
 const App: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
@@ -112,16 +112,28 @@ const App: React.FC = () => {
     }
   };
 
+  const getAmountInBDT = (amount: number, currency: Currency) => {
+    return currency === 'MYR' ? amount * EXCHANGE_RATE : amount;
+  };
+
   const summary = useMemo<SummaryData>(() => {
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
-    const totalIncome = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-    const totalExpense = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+
+    const totalIncome = transactions
+      .filter(t => t.type === 'income')
+      .reduce((sum, t) => sum + getAmountInBDT(t.amount, t.currency), 0);
+
+    const totalExpense = transactions
+      .filter(t => t.type === 'expense')
+      .reduce((sum, t) => sum + getAmountInBDT(t.amount, t.currency), 0);
+
     const monthlyExpense = transactions.filter(t => {
       const d = new Date(t.date);
       return t.type === 'expense' && d.getMonth() === currentMonth && d.getFullYear() === currentYear;
-    }).reduce((sum, t) => sum + t.amount, 0);
+    }).reduce((sum, t) => sum + getAmountInBDT(t.amount, t.currency), 0);
+
     return { totalBalance: totalIncome - totalExpense, totalIncome, totalExpense, monthlyExpense };
   }, [transactions]);
 
@@ -139,8 +151,13 @@ const App: React.FC = () => {
               রাব্বি হোসেনের হিসাব
             </h1>
           </div>
-          <div className="text-slate-400 text-sm hidden sm:block">
-            {new Date().toLocaleDateString('bn-BD', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          <div className="flex flex-col items-end">
+            <div className="text-slate-400 text-sm hidden sm:block">
+              {new Date().toLocaleDateString('bn-BD', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            </div>
+            <div className="text-[10px] text-indigo-400 font-mono">
+              RM 1 = ৳ {EXCHANGE_RATE}
+            </div>
           </div>
         </div>
       </header>

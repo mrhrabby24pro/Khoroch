@@ -10,7 +10,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({ summary }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
       <div className="bg-gradient-to-br from-indigo-600 to-blue-700 p-6 rounded-2xl shadow-lg">
-        <p className="text-indigo-100 text-sm font-medium">মোট ব্যালেন্স</p>
+        <p className="text-indigo-100 text-sm font-medium">মোট ব্যালেন্স (৳)</p>
         <h2 className="text-3xl font-bold mt-1">৳ {summary.totalBalance.toLocaleString()}</h2>
       </div>
       
@@ -22,7 +22,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({ summary }) => {
             </svg>
           </div>
           <div>
-            <p className="text-slate-400 text-xs">মোট আয়</p>
+            <p className="text-slate-400 text-xs">মোট আয় (৳)</p>
             <h2 className="text-xl font-bold text-emerald-400">৳ {summary.totalIncome.toLocaleString()}</h2>
           </div>
         </div>
@@ -36,7 +36,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({ summary }) => {
             </svg>
           </div>
           <div>
-            <p className="text-slate-400 text-xs">এই মাসের ব্যয়</p>
+            <p className="text-slate-400 text-xs">এই মাসের ব্যয় (৳)</p>
             <h2 className="text-xl font-bold text-rose-400">৳ {summary.monthlyExpense.toLocaleString()}</h2>
           </div>
         </div>

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Transaction, TransactionType } from '../types';
+import { Transaction, TransactionType, Currency } from '../types';
 import { INCOME_CATEGORIES, EXPENSE_CATEGORIES } from '../constants';
 import { Card } from './Card';
 
@@ -10,6 +10,7 @@ interface TransactionFormProps {
 
 export const TransactionForm: React.FC<TransactionFormProps> = ({ onAdd }) => {
   const [type, setType] = useState<TransactionType>('expense');
+  const [currency, setCurrency] = useState<Currency>('BDT');
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState(EXPENSE_CATEGORIES[0]);
@@ -21,6 +22,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAdd }) => {
 
     onAdd({
       amount: parseFloat(amount),
+      currency,
       description,
       type,
       category,
@@ -39,6 +41,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAdd }) => {
   return (
     <Card title="নতুন এন্ট্রি যোগ করুন">
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Transaction Type Toggle */}
         <div className="flex p-1 bg-slate-800 rounded-lg">
           <button
             type="button"
@@ -60,8 +63,35 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAdd }) => {
           </button>
         </div>
 
+        {/* Currency Toggle */}
+        <div className="flex items-center gap-2 mb-2">
+          <label className="text-xs text-slate-500 font-bold uppercase tracking-wider">মুদ্রা বাছাই:</label>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setCurrency('BDT')}
+              className={`px-3 py-1 rounded-full text-xs font-bold border transition-all ${
+                currency === 'BDT' ? 'bg-indigo-600/20 border-indigo-500 text-indigo-400' : 'bg-slate-800 border-slate-700 text-slate-500 hover:border-slate-600'
+              }`}
+            >
+              ৳ BDT
+            </button>
+            <button
+              type="button"
+              onClick={() => setCurrency('MYR')}
+              className={`px-3 py-1 rounded-full text-xs font-bold border transition-all ${
+                currency === 'MYR' ? 'bg-amber-600/20 border-amber-500 text-amber-400' : 'bg-slate-800 border-slate-700 text-slate-500 hover:border-slate-600'
+              }`}
+            >
+              RM MYR
+            </button>
+          </div>
+        </div>
+
         <div>
-          <label className="block text-sm text-slate-400 mb-1">টাকার পরিমাণ (৳)</label>
+          <label className="block text-sm text-slate-400 mb-1">
+            পরিমাণ ({currency === 'BDT' ? '৳' : 'RM'})
+          </label>
           <input
             type="number"
             value={amount}

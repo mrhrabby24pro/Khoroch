@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { QuickPreset, Transaction } from '../types';
+import { QuickPreset, Transaction, Currency } from '../types';
 import { Card } from './Card';
 import { INCOME_CATEGORIES, EXPENSE_CATEGORIES } from '../constants';
 
@@ -18,6 +18,7 @@ export const QuickAdd: React.FC<QuickAddProps> = ({ presets, onAdd, onUpdatePres
   const [form, setForm] = useState<Omit<QuickPreset, 'id'>>({
     icon: '💰',
     amount: 0,
+    currency: 'BDT',
     description: '',
     category: EXPENSE_CATEGORIES[0],
     type: 'expense'
@@ -48,6 +49,7 @@ export const QuickAdd: React.FC<QuickAddProps> = ({ presets, onAdd, onUpdatePres
     setForm({
       icon: '💰',
       amount: 0,
+      currency: 'BDT',
       description: '',
       category: EXPENSE_CATEGORIES[0],
       type: 'expense'
@@ -89,35 +91,43 @@ export const QuickAdd: React.FC<QuickAddProps> = ({ presets, onAdd, onUpdatePres
                 value={form.description} 
                 onChange={e => setForm({...form, description: e.target.value})}
                 placeholder="নাম"
-                className="col-span-3 bg-slate-800 border border-slate-700 rounded p-2 text-sm"
+                className="col-span-3 bg-slate-800 border border-slate-700 rounded p-2 text-sm text-white"
               />
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <input 
                 type="number" 
                 value={form.amount || ''} 
                 onChange={e => setForm({...form, amount: parseFloat(e.target.value) || 0})}
                 placeholder="টাকা"
-                className="bg-slate-800 border border-slate-700 rounded p-2 text-sm"
+                className="bg-slate-800 border border-slate-700 rounded p-2 text-sm text-white"
               />
+              <select 
+                value={form.currency} 
+                onChange={e => setForm({...form, currency: e.target.value as Currency})}
+                className="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-white"
+              >
+                <option value="BDT">৳ BDT</option>
+                <option value="MYR">RM MYR</option>
+              </select>
               <select 
                 value={form.type} 
                 onChange={e => {
                   const newType = e.target.value as any;
                   setForm({...form, type: newType, category: newType === 'income' ? INCOME_CATEGORIES[0] : EXPENSE_CATEGORIES[0]});
                 }}
-                className="bg-slate-800 border border-slate-700 rounded p-2 text-sm"
+                className="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-white"
               >
                 <option value="expense">ব্যয়</option>
                 <option value="income">আয়</option>
               </select>
             </div>
             <div className="flex gap-2">
-              <button onClick={handleSave} className="flex-1 bg-indigo-600 hover:bg-indigo-700 py-2 rounded text-xs font-bold transition-all">
+              <button onClick={handleSave} className="flex-1 bg-indigo-600 hover:bg-indigo-700 py-2 rounded text-xs font-bold transition-all text-white">
                 {editingId ? 'আপডেট করুন' : 'নতুন যোগ করুন'}
               </button>
               {editingId && (
-                <button onClick={resetForm} className="bg-slate-700 px-4 py-2 rounded text-xs">বাতিল</button>
+                <button onClick={resetForm} className="bg-slate-700 px-4 py-2 rounded text-xs text-white">বাতিল</button>
               )}
             </div>
           </div>
@@ -128,8 +138,10 @@ export const QuickAdd: React.FC<QuickAddProps> = ({ presets, onAdd, onUpdatePres
                 <div className="flex items-center gap-3">
                   <span className="text-xl">{p.icon}</span>
                   <div>
-                    <p className="text-xs font-medium">{p.description}</p>
-                    <p className={`text-[10px] ${p.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>৳{p.amount}</p>
+                    <p className="text-xs font-medium text-slate-200">{p.description}</p>
+                    <p className={`text-[10px] ${p.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      {p.currency === 'MYR' ? 'RM ' : '৳ '}{p.amount}
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-1">
@@ -158,6 +170,7 @@ export const QuickAdd: React.FC<QuickAddProps> = ({ presets, onAdd, onUpdatePres
                 key={preset.id}
                 onClick={() => onAdd({
                   amount: preset.amount,
+                  currency: preset.currency,
                   description: preset.description,
                   category: preset.category,
                   type: preset.type,
@@ -168,7 +181,7 @@ export const QuickAdd: React.FC<QuickAddProps> = ({ presets, onAdd, onUpdatePres
                 <span className="text-2xl mb-1 group-hover:scale-110 transition-transform">{preset.icon}</span>
                 <span className="text-xs font-semibold text-slate-200 line-clamp-1">{preset.description}</span>
                 <span className={`text-[10px] mt-1 px-2 py-0.5 rounded-full ${preset.type === 'income' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
-                  ৳{preset.amount}
+                  {preset.currency === 'MYR' ? 'RM ' : '৳ '}{preset.amount}
                 </span>
               </button>
             ))
